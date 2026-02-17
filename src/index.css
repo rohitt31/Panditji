@@ -1,0 +1,507 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@200;300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 240 8% 4%;
+    --foreground: 38 25% 92%;
+
+    --card: 240 6% 8%;
+    --card-foreground: 38 25% 92%;
+
+    --popover: 240 6% 8%;
+    --popover-foreground: 38 25% 92%;
+
+    --primary: 38 72% 55%;
+    --primary-foreground: 240 8% 4%;
+
+    --secondary: 355 35% 22%;
+    --secondary-foreground: 38 25% 92%;
+
+    --muted: 240 6% 11%;
+    --muted-foreground: 38 12% 48%;
+
+    --accent: 38 45% 42%;
+    --accent-foreground: 240 8% 4%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 38 10% 14%;
+    --input: 240 6% 11%;
+    --ring: 38 72% 55%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 240 6% 6%;
+    --sidebar-foreground: 38 25% 92%;
+    --sidebar-primary: 38 72% 55%;
+    --sidebar-primary-foreground: 240 8% 4%;
+    --sidebar-accent: 240 6% 11%;
+    --sidebar-accent-foreground: 38 25% 92%;
+    --sidebar-border: 38 10% 14%;
+    --sidebar-ring: 38 72% 55%;
+
+    /* Sacred tokens */
+    --gold: 40 65% 52%;
+    --saffron: 38 72% 55%;
+    --maroon: 355 35% 22%;
+    --cosmic: 240 8% 4%;
+    --cosmic-light: 240 6% 9%;
+    --warm-white: 38 25% 92%;
+    --sacred-glow: 38 72% 55%;
+    --divine-copper: 25 55% 45%;
+    --temple-red: 0 60% 35%;
+
+    /* Glassmorphism tokens */
+    --glass-bg: 240 6% 10%;
+    --glass-border: 38 72% 55%;
+    --glass-blur: 24px;
+  }
+
+  .dark {
+    --background: 240 8% 4%;
+    --foreground: 38 25% 92%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.01em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  ::selection {
+    background: hsl(38 72% 55% / 0.3);
+    color: hsl(38 25% 92%);
+  }
+}
+
+@layer utilities {
+  .font-heading {
+    font-family: 'Playfair Display', serif;
+  }
+
+  .font-serif {
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .font-body {
+    font-family: 'Outfit', sans-serif;
+  }
+
+  .text-gradient-gold {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(40 65% 52%), hsl(38 72% 55%), hsl(25 55% 45%));
+  }
+
+  .text-gradient-divine {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(38 72% 55%), hsl(40 65% 58%), hsl(38 72% 55%));
+  }
+
+  .sacred-divider {
+    @apply w-full flex items-center justify-center gap-4 my-8;
+  }
+
+  .sacred-divider::before,
+  .sacred-divider::after {
+    content: '';
+    @apply flex-1 h-px;
+    background: linear-gradient(90deg, transparent, hsl(38 72% 55% / 0.2), transparent);
+  }
+
+  /* ============================================
+     🔮 SACRED GLASSMORPHISM SYSTEM
+     ============================================ */
+
+  /* --- Tier 1: Subtle Glass (sections, backgrounds) --- */
+  .glass-subtle {
+    background: hsl(var(--glass-bg) / 0.3);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid hsl(var(--glass-border) / 0.04);
+  }
+
+  /* --- Tier 2: Standard Glass Card --- */
+  .glass-card {
+    background: linear-gradient(135deg,
+        hsl(var(--glass-bg) / 0.5),
+        hsl(var(--glass-bg) / 0.3));
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid hsl(var(--glass-border) / 0.06);
+    border-radius: var(--radius);
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .glass-card:hover {
+    background: linear-gradient(135deg,
+        hsl(var(--glass-bg) / 0.65),
+        hsl(var(--glass-bg) / 0.4));
+    border-color: hsl(var(--glass-border) / 0.12);
+    box-shadow:
+      0 8px 32px hsl(var(--glass-border) / 0.04),
+      inset 0 1px 0 hsl(var(--glass-border) / 0.06);
+    transform: translateY(-3px);
+  }
+
+  /* --- Tier 3: Elevated Glass (featured items, CTAs) --- */
+  .glass-elevated {
+    background: linear-gradient(145deg,
+        hsl(var(--glass-bg) / 0.6),
+        hsl(var(--glass-bg) / 0.35),
+        hsl(var(--glass-bg) / 0.45));
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid hsl(var(--glass-border) / 0.08);
+    border-radius: var(--radius);
+    box-shadow:
+      0 4px 24px hsl(240 8% 0% / 0.3),
+      inset 0 1px 0 hsl(var(--glass-border) / 0.05);
+  }
+
+  .glass-elevated:hover {
+    border-color: hsl(var(--glass-border) / 0.15);
+    box-shadow:
+      0 12px 40px hsl(240 8% 0% / 0.4),
+      0 0 60px hsl(var(--glass-border) / 0.04),
+      inset 0 1px 0 hsl(var(--glass-border) / 0.08);
+  }
+
+  /* --- Tier 4: Sacred Glass (hero overlays, special elements) --- */
+  .glass-sacred {
+    background: linear-gradient(160deg,
+        hsl(var(--glass-bg) / 0.4),
+        hsl(240 8% 6% / 0.2),
+        hsl(var(--glass-bg) / 0.3));
+    backdrop-filter: blur(40px) saturate(1.4);
+    -webkit-backdrop-filter: blur(40px) saturate(1.4);
+    border: 1px solid hsl(var(--glass-border) / 0.1);
+    border-radius: calc(var(--radius) * 1.5);
+    box-shadow:
+      0 8px 32px hsl(240 8% 0% / 0.4),
+      inset 0 1px 0 hsl(var(--glass-border) / 0.08),
+      inset 0 -1px 0 hsl(240 8% 0% / 0.3);
+  }
+
+  /* --- Inner light reflection on glass top edge --- */
+  .glass-reflection {
+    position: relative;
+  }
+
+  .glass-reflection::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, hsl(var(--glass-border) / 0.15), transparent);
+    border-radius: 50%;
+  }
+
+  /* --- Shine sweep animation on hover --- */
+  .glass-shine {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .glass-shine::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, hsl(var(--glass-border) / 0.04), transparent);
+    transition: left 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
+
+  .glass-shine:hover::after {
+    left: 150%;
+  }
+
+  /* ============================================
+     ✨ GLOW EFFECTS
+     ============================================ */
+
+  .glow-saffron {
+    box-shadow: 0 0 30px hsl(38 72% 55% / 0.1), 0 0 60px hsl(38 72% 55% / 0.03);
+  }
+
+  .glow-saffron-strong {
+    box-shadow: 0 0 40px hsl(38 72% 55% / 0.18), 0 0 80px hsl(38 72% 55% / 0.06);
+  }
+
+  /* Aura glow — divine golden light behind elements */
+  .glow-aura {
+    position: relative;
+  }
+
+  .glow-aura::before {
+    content: '';
+    position: absolute;
+    inset: -20%;
+    background: radial-gradient(ellipse at center,
+        hsl(38 72% 55% / 0.06),
+        hsl(38 72% 55% / 0.02) 40%,
+        transparent 70%);
+    z-index: -1;
+    pointer-events: none;
+    transition: opacity 0.5s;
+    opacity: 0;
+  }
+
+  .glow-aura:hover::before {
+    opacity: 1;
+  }
+
+  /* ============================================
+     🌌 BACKGROUNDS
+     ============================================ */
+
+  .bg-cosmic-gradient {
+    background: linear-gradient(180deg, hsl(240 8% 4%), hsl(240 6% 7%), hsl(240 8% 4%));
+  }
+
+  .bg-cosmic-radial {
+    background: radial-gradient(ellipse at center, hsl(240 6% 9%), hsl(240 8% 4%));
+  }
+
+  .bg-divine-gradient {
+    background: linear-gradient(180deg, hsl(240 8% 4%) 0%, hsl(240 6% 6%) 50%, hsl(240 8% 4%) 100%);
+  }
+
+  /* Aurora mesh — subtle cosmic nebula effect */
+  .bg-aurora {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bg-aurora::before {
+    content: '';
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    top: -25%;
+    left: -25%;
+    background:
+      radial-gradient(ellipse at 30% 20%, hsl(38 72% 55% / 0.03) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 80%, hsl(25 55% 45% / 0.03) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, hsl(355 35% 22% / 0.02) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Section divider — glowing golden line */
+  .section-divider-top {
+    position: relative;
+  }
+
+  .section-divider-top::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, hsl(38 72% 55% / 0.1), transparent);
+  }
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(240 8% 4%);
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(38 72% 55% / 0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(38 72% 55% / 0.4);
+}
+
+/* ============================================
+   🪷 BUTTON SYSTEM
+   ============================================ */
+.btn-divine {
+  @apply inline-flex items-center gap-2 px-9 py-4 font-body text-sm font-medium tracking-[0.18em] uppercase transition-all duration-500;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+}
+
+.btn-divine::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, hsl(38 72% 55% / 0.12), transparent);
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.btn-divine:hover::before {
+  opacity: 1;
+}
+
+.btn-divine-primary {
+  @apply btn-divine text-primary-foreground;
+  background: linear-gradient(135deg, hsl(38 72% 55%), hsl(40 65% 50%));
+  box-shadow:
+    0 4px 20px hsl(38 72% 55% / 0.2),
+    inset 0 1px 0 hsl(40 65% 70% / 0.2);
+}
+
+.btn-divine-primary:hover {
+  box-shadow:
+    0 6px 30px hsl(38 72% 55% / 0.3),
+    inset 0 1px 0 hsl(40 65% 70% / 0.3);
+  transform: translateY(-2px);
+}
+
+.btn-divine-outline {
+  @apply btn-divine text-foreground;
+  background: hsl(var(--glass-bg) / 0.3);
+  backdrop-filter: blur(12px);
+  border: 1px solid hsl(38 72% 55% / 0.15);
+}
+
+.btn-divine-outline:hover {
+  border-color: hsl(38 72% 55% / 0.35);
+  background: hsl(38 72% 55% / 0.06);
+  box-shadow: 0 0 20px hsl(38 72% 55% / 0.06);
+  transform: translateY(-1px);
+}
+
+/* ============================================
+   🔮 FLOATING PARTICLES (decorative)
+   ============================================ */
+@keyframes float-particle {
+
+  0%,
+  100% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0.3;
+  }
+
+  25% {
+    transform: translateY(-20px) translateX(10px) scale(1.1);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: translateY(-10px) translateX(-5px) scale(0.9);
+    opacity: 0.4;
+  }
+
+  75% {
+    transform: translateY(-25px) translateX(8px) scale(1.05);
+    opacity: 0.35;
+  }
+}
+
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.animate-float {
+  animation: float-particle 8s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+}
+
+@font-face {
+  font-family: 'AmsManthan';
+  src: url('/fonts/Ams Manthan.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.font-hindi {
+  font-family: 'AmsManthan', sans-serif;
+}
+
+/* ============================================
+   LENIS SMOOTH SCROLL
+   ============================================ */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}

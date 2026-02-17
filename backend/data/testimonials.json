@@ -1,0 +1,26 @@
+[
+    {
+        "id": "1",
+        "name": "Priya Sharma",
+        "location": "Mumbai",
+        "quote": "Pandit Ji's Griha Pravesh puja was incredibly divine. The authentic vedic rituals filled our new home with positive energy. Highly recommended!",
+        "rating": 5,
+        "image": "/images/testimonials/priya.jpg"
+    },
+    {
+        "id": "2",
+        "name": "Rajesh Gupta",
+        "location": "Delhi",
+        "quote": "We booked Satyanarayan Katha online. The process was seamless and the puja was conducted with such devotion and clarity. A true spiritual experience.",
+        "rating": 5,
+        "image": "/images/testimonials/rajesh.jpg"
+    },
+    {
+        "id": "3",
+        "name": "Anjali Verma",
+        "location": "Bangalore",
+        "quote": "The detailed Kundali reading gave me so much clarity about my career path. Very knowledgeable and patient guidance.",
+        "rating": 5,
+        "image": "/images/testimonials/anjali.jpg"
+    }
+]

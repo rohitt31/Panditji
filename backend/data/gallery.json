@@ -1,0 +1,27 @@
+[
+    {
+        "id": "1",
+        "caption": "Evening Aarti at Dashashwamedh Ghat",
+        "image": "/images/instagram/aarti.jpg"
+    },
+    {
+        "id": "2",
+        "caption": "Rudrabhishek ceremony",
+        "image": "/images/instagram/rudrabhishek.jpg"
+    },
+    {
+        "id": "3",
+        "caption": "Vivah Sanskar — a sacred union",
+        "image": "/images/instagram/wedding.jpg"
+    },
+    {
+        "id": "4",
+        "caption": "Morning prayers by the Ganges",
+        "image": "/images/instagram/ganges.jpg"
+    },
+    {
+        "id": "5",
+        "caption": "Satyanarayan Katha",
+        "image": "/images/instagram/satyanarayan.jpg"
+    }
+]

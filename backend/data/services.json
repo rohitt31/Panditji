@@ -1,0 +1,105 @@
+[
+  {
+    "id": "1",
+    "title": "Griha Pravesh",
+    "subtitle": "House Warming Ceremony",
+    "description": "Invite prosperity and divine blessings into your new home with authentic Vedic Griha Pravesh puja performed with verified rituals and sacred mantras.",
+    "image": "/images/services/griha-pravesh.png",
+    "icon": "🏠",
+    "duration": "2-3 hours",
+    "priceRange": "₹5,000 – ₹15,000",
+    "features": [
+      "Ganesh Puja",
+      "Vastu Shanti",
+      "Navagraha Havan",
+      "Griha Shanti Mantra"
+    ],
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "2",
+    "title": "Satyanarayan Katha",
+    "subtitle": "Prosperity & Harmony",
+    "description": "Bring harmony and abundance to your family through the sacred Satyanarayan Swamy Katha, performed on Purnima or special occasions with full Vedic vidhi.",
+    "image": "/images/services/satyanarayan.png",
+    "icon": "📖",
+    "duration": "3-4 hours",
+    "priceRange": "₹7,000 – ₹20,000",
+    "features": [
+      "Katha Vachan",
+      "Prasad Distribution",
+      "Aarti",
+      "Puja Samagri Included"
+    ],
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "3",
+    "title": "Vivah Sanskar",
+    "subtitle": "Vedic Wedding Ceremony",
+    "description": "Complete Vedic Wedding ceremony conducting all rituals from Jaymala to Kanyadaan with profound spiritual explanation and traditional mantras.",
+    "image": "/images/services/vivah.png",
+    "icon": "💍",
+    "duration": "Full day",
+    "priceRange": "₹50,000 – ₹1,50,000",
+    "features": [
+      "Ganesh Puja",
+      "Kanyadaan",
+      "Saptapadi",
+      "Mangal Pheras",
+      "Sindoor Daan"
+    ],
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "4",
+    "title": "Mahamrityunjaya Jaap",
+    "subtitle": "Healing & Longevity",
+    "description": "Powerful healing mantra chanting for longevity, health, and overcoming fear. Performed with 11 or 21 Brahmins for maximum spiritual energy.",
+    "image": "/images/services/rudrabhishek.png",
+    "icon": "🙏",
+    "duration": "4-5 hours",
+    "priceRange": "₹10,000 – ₹30,000",
+    "features": [
+      "1.25 Lakh Jaap",
+      "Havan",
+      "Brahmin Bhojan",
+      "Dakshina Included"
+    ],
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "5",
+    "title": "Rudrabhishek",
+    "subtitle": "Sacred Shiva Puja",
+    "description": "Sacred abhishekam of Lord Shiva with milk, honey, and holy water for removing negativity, fulfilling desires and attaining divine blessings.",
+    "image": "/images/services/rudrabhishek.png",
+    "icon": "🔱",
+    "duration": "2-3 hours",
+    "priceRange": "₹6,000 – ₹18,000",
+    "features": [
+      "Rudra Abhishek",
+      "Bilva Patra Puja",
+      "Shiva Aarti",
+      "Prasad"
+    ],
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "6",
+    "title": "Mundan Sanskar",
+    "subtitle": "First Haircut Ceremony",
+    "description": "Traditional ceremony for child's first haircut symbolizing purity, growth, and divine blessings. Performed with proper Vedic mantras and rituals.",
+    "image": "/images/services/mundan.png",
+    "icon": "👶",
+    "duration": "1-2 hours",
+    "priceRange": "₹3,000 – ₹8,000",
+    "features": [
+      "Ganesh Puja",
+      "Mundan Vidhi",
+      "Havan",
+      "Brahmin Bhojan"
+    ],
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  }
+]
