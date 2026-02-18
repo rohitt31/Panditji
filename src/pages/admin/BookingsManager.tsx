@@ -1,6 +1,14 @@
 import { useState, useEffect } from "react";
 import { Trash2, Loader2, RefreshCw, Search, Filter } from "lucide-react";
 import logger from "@/lib/logger";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
 
 interface Booking {
     id: string;
@@ -23,6 +31,7 @@ const BookingsManager = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [statusFilter, setStatusFilter] = useState("all");
     const [expandedId, setExpandedId] = useState<string | null>(null);
+    const { toast } = useToast();
 
     const token = localStorage.getItem("adminToken");
     const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
@@ -30,7 +39,7 @@ const BookingsManager = () => {
     const fetchBookings = async () => {
         setLoading(true);
         try {
-            const res = await fetch("/api/bookings");
+            const res = await fetch("/api/bookings", { headers });
             const data = await res.json();
             setBookings(
                 Array.isArray(data)
@@ -39,6 +48,11 @@ const BookingsManager = () => {
             );
         } catch (err) {
             logger.error("Failed to fetch bookings", err);
+            toast({
+                title: "Error",
+                description: "Failed to fetch bookings.",
+                variant: "destructive",
+            });
         } finally {
             setLoading(false);
         }
@@ -49,29 +63,57 @@ const BookingsManager = () => {
     }, []);
 
     const updateStatus = async (id: string, newStatus: string) => {
+        // Optimistic update
+        const originalBookings = [...bookings];
+        setBookings(prev =>
+            prev.map(b => (b.id === id ? { ...b, status: newStatus } : b))
+        );
+
         try {
             const res = await fetch(`/api/bookings/${id}`, {
                 method: "PUT",
                 headers: { ...headers, "Content-Type": "application/json" },
                 body: JSON.stringify({ status: newStatus }),
             });
+
             if (res.ok) {
-                setBookings(prev =>
-                    prev.map(b => (b.id === id ? { ...b, status: newStatus } : b))
-                );
+                toast({
+                    title: "Status Updated",
+                    description: `Booking marked as ${newStatus}.`,
+                });
+            } else {
+                throw new Error("Failed to update status");
             }
         } catch (err) {
             logger.error("Failed to update status", err);
+            // Revert optimistic update
+            setBookings(originalBookings);
+            toast({
+                title: "Error",
+                description: "Failed to update status.",
+                variant: "destructive",
+            });
         }
     };
 
     const deleteBooking = async (id: string) => {
         if (!confirm("Are you sure you want to delete this booking?")) return;
         try {
-            await fetch(`/api/bookings/${id}`, { method: "DELETE", headers });
-            setBookings(prev => prev.filter(b => b.id !== id));
+            const res = await fetch(`/api/bookings/${id}`, { method: "DELETE", headers });
+            if (res.ok) {
+                setBookings(prev => prev.filter(b => b.id !== id));
+                toast({
+                    title: "Deleted",
+                    description: "Booking deleted successfully.",
+                });
+            }
         } catch (err) {
             logger.error("Failed to delete booking", err);
+            toast({
+                title: "Error",
+                description: "Failed to delete booking.",
+                variant: "destructive",
+            });
         }
     };
 
@@ -126,18 +168,18 @@ const BookingsManager = () => {
                         className="w-full bg-white/5 border border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-white text-sm placeholder:text-white/25 focus:border-primary/50 focus:outline-none transition-colors"
                     />
                 </div>
-                <div className="relative">
-                    <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
-                    <select
-                        value={statusFilter}
-                        onChange={e => setStatusFilter(e.target.value)}
-                        className="bg-white/5 border border-white/10 rounded-lg pl-10 pr-8 py-2.5 text-white text-sm focus:border-primary/50 focus:outline-none transition-colors appearance-none cursor-pointer min-w-[160px]"
-                    >
-                        <option value="all">All Statuses</option>
-                        {statusOptions.map(s => (
-                            <option key={s} value={s}>{s}</option>
-                        ))}
-                    </select>
+                <div className="relative min-w-[160px]">
+                    <Select value={statusFilter} onValueChange={setStatusFilter}>
+                        <SelectTrigger className="bg-white/5 border border-white/10 text-white h-[42px]">
+                            <SelectValue placeholder="Filter by Status" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-zinc-900 border-white/10 text-white">
+                            <SelectItem value="all">All Statuses</SelectItem>
+                            {statusOptions.map(s => (
+                                <SelectItem key={s} value={s}>{s}</SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
                 </div>
             </div>
 
@@ -179,26 +221,38 @@ const BookingsManager = () => {
                                                 <td className="px-5 py-4 text-white/30 font-mono text-xs">{index + 1}</td>
                                                 <td className="px-5 py-4 text-white font-medium whitespace-nowrap">{booking.name}</td>
                                                 <td className="px-5 py-4 text-white/60 whitespace-nowrap">
-                                                    <a href={`tel:${booking.phone}`} className="hover:text-primary transition-colors">{booking.phone}</a>
+                                                    <a
+                                                        href={`tel:${booking.phone}`}
+                                                        className="hover:text-primary transition-colors"
+                                                        onClick={e => e.stopPropagation()}
+                                                    >
+                                                        {booking.phone}
+                                                    </a>
                                                 </td>
                                                 <td className="px-5 py-4 text-white/50 hidden lg:table-cell">{booking.email || "—"}</td>
                                                 <td className="px-5 py-4 text-white/70 whitespace-nowrap">{booking.service}</td>
                                                 <td className="px-5 py-4 text-white/50 hidden md:table-cell whitespace-nowrap">{booking.date || "—"}</td>
                                                 <td className="px-5 py-4 text-white/50 hidden lg:table-cell">{booking.location || "—"}</td>
-                                                <td className="px-5 py-4">
-                                                    <select
-                                                        value={booking.status}
-                                                        onChange={e => {
-                                                            e.stopPropagation();
-                                                            updateStatus(booking.id, e.target.value);
-                                                        }}
-                                                        onClick={e => e.stopPropagation()}
-                                                        className={`text-xs px-2.5 py-1 rounded-full border cursor-pointer focus:outline-none ${statusColor(booking.status)} bg-transparent`}
-                                                    >
-                                                        {statusOptions.map(s => (
-                                                            <option key={s} value={s} className="bg-black text-white">{s}</option>
-                                                        ))}
-                                                    </select>
+                                                <td className="px-5 py-4" onClick={e => e.stopPropagation()}>
+                                                    <div className="relative">
+                                                        <select
+                                                            value={booking.status}
+                                                            onChange={(e) => updateStatus(booking.id, e.target.value)}
+                                                            className={`appearance-none h-8 pl-3 pr-8 rounded-md text-xs font-medium border-0 focus:ring-1 focus:ring-white/20 cursor-pointer transition-all ${statusColor(booking.status)}`}
+                                                            onClick={e => e.stopPropagation()}
+                                                        >
+                                                            {statusOptions.map((s) => (
+                                                                <option key={s} value={s} className="bg-zinc-900 text-white">
+                                                                    {s}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                        <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none opacity-50">
+                                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                                            </svg>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                                 <td className="px-5 py-4">
                                                     <button

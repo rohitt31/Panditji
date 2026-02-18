@@ -18,6 +18,10 @@ const TestimonialsSection = () => {
       .catch(err => logger.error('Failed to fetch testimonials', err));
   }, []);
 
+  if (testimonials.length === 0) {
+    return null;
+  }
+
   return (
     <section className="py-24 lg:py-32 relative overflow-hidden">
       {/* Maroon Theme Overlay */}
@@ -56,7 +60,7 @@ const TestimonialsSection = () => {
               }}
               className="glass-elevated glass-reflection glass-shine p-8 lg:p-10 relative group"
             >
-              {/* Large quote watermark */}
+              {/* Large quote watermarker */}
               <div className="absolute top-5 right-6 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity duration-700">
                 <Quote className="w-16 h-16 text-primary" />
               </div>

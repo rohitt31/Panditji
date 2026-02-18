@@ -25,6 +25,7 @@ import TestimonialsManager from "./pages/admin/TestimonialsManager";
 import GalleryManager from "./pages/admin/GalleryManager";
 import DynamicCardsManager from "./pages/admin/DynamicCardsManager";
 import BookingsManager from "./pages/admin/BookingsManager";
+import MessagesManager from "./pages/admin/MessagesManager";
 import AdminSettings from "./pages/admin/AdminSettings";
 
 const queryClient = new QueryClient();
@@ -56,6 +57,7 @@ const App = () => (
             <Route path="gallery" element={<GalleryManager />} />
             <Route path="cards" element={<DynamicCardsManager />} />
             <Route path="bookings" element={<BookingsManager />} />
+            <Route path="messages" element={<MessagesManager />} />
             <Route path="settings" element={<AdminSettings />} />
           </Route>
 

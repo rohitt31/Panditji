@@ -78,6 +78,16 @@ const AartiMemberSection = () => {
                                 </motion.div>
                             ))}
                         </div>
+
+                        {/* CTA Button */}
+                        <div className="mt-10">
+                            <Link
+                                to="/book"
+                                className="inline-flex items-center justify-center px-8 py-3 bg-primary text-background font-bold tracking-widest uppercase rounded-full hover:bg-primary/90 hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(253,185,49,0.3)]"
+                            >
+                                Book Aarti
+                            </Link>
+                        </div>
                     </motion.div>
 
                     {/* Right Image */}
@@ -99,16 +109,6 @@ const AartiMemberSection = () => {
                                     alt="Pandit Ji performing Ganga Aarti"
                                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                                 />
-
-                                {/* Book Now Overlay */}
-                                <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-500 z-20 bg-black/40 backdrop-blur-[2px]">
-                                    <Link
-                                        to="/book"
-                                        className="px-8 py-3 bg-primary text-background font-bold tracking-widest uppercase rounded-full transform scale-90 hover:scale-100 transition-transform duration-300 shadow-[0_0_20px_rgba(253,185,49,0.4)]"
-                                    >
-                                        Book Now
-                                    </Link>
-                                </div>
                             </div>
                         </div>
 

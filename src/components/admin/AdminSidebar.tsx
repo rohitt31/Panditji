@@ -7,7 +7,8 @@ import {
     Calendar,
     Grid,
     LogOut,
-    Settings
+    Settings,
+    Mail
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -18,6 +19,7 @@ const links = [
     { href: "/admin/gallery", label: "Gallery", icon: ImageIcon },
     { href: "/admin/cards", label: "Content Cards", icon: Grid },
     { href: "/admin/bookings", label: "Bookings", icon: Calendar },
+    { href: "/admin/messages", label: "Messages", icon: Mail },
     { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
 

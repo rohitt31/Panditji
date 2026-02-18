@@ -156,7 +156,7 @@ const upload = multer({
 // ============================================================
 // 5. RESOURCE ALLOWLIST (prevent arbitrary file-system access)
 // ============================================================
-const ALLOWED_RESOURCES = ['services', 'testimonials', 'gallery', 'cards', 'bookings'];
+const ALLOWED_RESOURCES = ['services', 'testimonials', 'gallery', 'cards', 'bookings', 'messages'];
 
 const validateResource = (req, res, next) => {
     const { resource } = req.params;
@@ -369,6 +369,117 @@ app.post('/api/bookings/public', bookingLimiter, (req, res) => {
     } catch (error) {
         logger.error('Error creating booking', error);
         res.status(500).json({ error: 'Failed to submit booking request.' });
+    }
+});
+
+app.post('/api/contact', bookingLimiter, (req, res) => {
+    try {
+        const { name, email, phone, subject, message } = req.body;
+
+        if (!name || !message || (!email && !phone)) {
+            return res.status(400).json({ error: 'Name, message, and at least one contact method (email/phone) are required.' });
+        }
+
+        const messages = readData('messages');
+        const newMessage = {
+            id: Date.now().toString(),
+            name: String(name).substring(0, 100),
+            email: email ? String(email).substring(0, 100) : null,
+            phone: phone ? String(phone).substring(0, 20) : null,
+            subject: subject ? String(subject).substring(0, 100) : 'General Inquiry',
+            message: String(message).substring(0, 1000),
+            read: false,
+            createdAt: new Date().toISOString()
+        };
+
+        messages.push(newMessage);
+        writeData('messages', messages);
+
+        logger.info('New contact message received', { messageId: newMessage.id });
+        res.status(201).json({ message: 'Message sent successfully.' });
+    } catch (error) {
+        logger.error('Error saving contact message', error);
+        res.status(500).json({ error: 'Failed to send message.' });
+    }
+});
+
+// ============================================================
+// 10.1 SENSITIVE RESOURCES (Admin Only)
+// ============================================================
+app.get('/api/bookings', requireAdmin, (req, res) => {
+    try {
+        const bookings = readData('bookings');
+        res.json(bookings);
+    } catch (error) {
+        logger.error('Error fetching bookings', error);
+        res.status(500).json({ error: 'Failed to fetch bookings.' });
+    }
+});
+
+import { sendConfirmationEmail } from './mailer.js';
+
+// ... (existing imports)
+
+app.put('/api/bookings/:id', requireAdmin, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+        const bookings = readData('bookings');
+        const index = bookings.findIndex(b => b.id === id);
+
+        if (index === -1) return res.status(404).json({ error: 'Booking not found.' });
+
+        const oldStatus = bookings[index].status;
+        bookings[index] = { ...bookings[index], status, updatedAt: new Date().toISOString() };
+        writeData('bookings', bookings);
+
+        // Send email if status changed to 'Confirmed'
+        if (status === 'Confirmed' && oldStatus !== 'Confirmed') {
+            // Run in background, don't block response
+            sendConfirmationEmail(bookings[index]).catch(err =>
+                logger.error('Background email failed', err)
+            );
+        }
+
+        auditLog.record({
+            adminId: req.user.id,
+            adminUsername: req.user.username,
+            action: 'UPDATE_STATUS',
+            resource: 'bookings',
+            itemId: id,
+            ip: req.ip
+        });
+
+        logger.info('Booking status updated', { bookingId: id, status, adminId: req.user.id });
+        res.json(bookings[index]);
+    } catch (error) {
+        logger.error('Error updating booking status', error);
+        res.status(500).json({ error: 'Failed to update status.' });
+    }
+});
+
+app.get('/api/messages', requireAdmin, (req, res) => {
+    try {
+        const messages = readData('messages');
+        res.json(messages);
+    } catch (error) {
+        logger.error('Error fetching messages', error);
+        res.status(500).json({ error: 'Failed to fetch messages.' });
+    }
+});
+
+app.delete('/api/messages/:id', requireAdmin, (req, res) => {
+    try {
+        const { id } = req.params;
+        const messages = readData('messages');
+        const newData = messages.filter(m => m.id !== id);
+        writeData('messages', newData);
+
+        logger.info('Message deleted', { messageId: id, adminId: req.user.id });
+        res.json({ success: true });
+    } catch (error) {
+        logger.error('Error deleting message', error);
+        res.status(500).json({ error: 'Failed to delete message.' });
     }
 });
 

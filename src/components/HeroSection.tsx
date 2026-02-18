@@ -55,7 +55,7 @@ const HeroSection = () => {
         {`@import url('https://fonts.googleapis.com/css2?family=Rozha+One&display=swap');`}
       </style>
 
-      <HeroScrollCanvas scrollHeight={5} />
+      <HeroScrollCanvas scrollHeight={2.5} />
 
       {/* Particles */}
       {isInView && (

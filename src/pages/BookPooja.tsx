@@ -5,6 +5,7 @@ import { Send, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 
+
 const ritualTypes = [
   "Griha Pravesh Pooja",
   "Satyanarayan Katha",
@@ -15,7 +16,8 @@ const ritualTypes = [
   "Naamkaran Sanskar",
   "Pitra Dosh Pooja",
   "Sunderkand Path",
-  "Other",
+  "Ganga Aarti Reservation",
+  "Others",
 ];
 
 const BookPooja = () => {
@@ -164,18 +166,27 @@ const BookPooja = () => {
               <label className="block text-xs text-muted-foreground tracking-wider uppercase mb-2">
                 Type of Ritual *
               </label>
-              <select
-                name="ritual"
-                required
-                value={form.ritual}
-                onChange={handleChange}
-                className={inputClass}
-              >
-                <option value="">Select a ritual</option>
-                {ritualTypes.map((r) => (
-                  <option key={r} value={r}>{r}</option>
-                ))}
-              </select>
+              <div className="relative">
+                <select
+                  name="ritual"
+                  required
+                  value={form.ritual}
+                  onChange={handleChange}
+                  className="w-full appearance-none bg-muted/30 border border-border/50 text-foreground text-sm px-4 py-3 pr-10 rounded-md focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-colors cursor-pointer font-body"
+                >
+                  <option value="" disabled className="bg-popover text-muted-foreground">Select a ritual</option>
+                  {ritualTypes.map((r) => (
+                    <option key={r} value={r} className="bg-popover text-popover-foreground py-2">
+                      {r}
+                    </option>
+                  ))}
+                </select>
+                <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-muted-foreground">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">

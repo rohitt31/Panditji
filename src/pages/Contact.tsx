@@ -88,6 +88,122 @@ const Contact = () => {
             </motion.div>
           </div>
 
+          {/* Contact Form Section */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="mt-16 bg-card/30 backdrop-blur-md border border-white/10 p-8 lg:p-12 rounded-2xl shadow-2xl relative overflow-hidden mb-16"
+          >
+            {/* Decorative bg */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+
+            <div className="text-center mb-10">
+              <h2 className="font-heading text-2xl lg:text-3xl mb-3">Send a Message</h2>
+              <p className="text-white/50 text-sm">Have a specific question? Write to us directly.</p>
+            </div>
+
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault();
+                const form = e.target as HTMLFormElement;
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+                const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+                const originalText = btn.innerText;
+
+                try {
+                  btn.disabled = true;
+                  btn.innerText = "Sending...";
+
+                  const res = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                  });
+
+                  if (res.ok) {
+                    alert('Message sent successfully! Pandit Ji will reply soon.');
+                    form.reset();
+                  } else {
+                    const err = await res.json();
+                    alert(err.error || 'Failed to send message.');
+                  }
+                } catch (err) {
+                  console.error(err);
+                  alert('Something went wrong. Please try again.');
+                } finally {
+                  btn.disabled = false;
+                  btn.innerText = originalText;
+                }
+              }}
+              className="space-y-6 relative z-10"
+            >
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-xs uppercase tracking-wider text-white/40 mb-2">Your Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    required
+                    className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-primary/50 focus:outline-none transition-colors"
+                    placeholder="Enter your name"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs uppercase tracking-wider text-white/40 mb-2">Phone Number</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-primary/50 focus:outline-none transition-colors"
+                    placeholder="Example: 98765 43210"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs uppercase tracking-wider text-white/40 mb-2">Email Address</label>
+                <input
+                  type="email"
+                  name="email"
+                  className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-primary/50 focus:outline-none transition-colors"
+                  placeholder="name@example.com"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs uppercase tracking-wider text-white/40 mb-2">Subject</label>
+                <input
+                  type="text"
+                  name="subject"
+                  className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-primary/50 focus:outline-none transition-colors"
+                  placeholder="What is this regarding?"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs uppercase tracking-wider text-white/40 mb-2">Your Message</label>
+                <textarea
+                  name="message"
+                  required
+                  rows={4}
+                  className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-primary/50 focus:outline-none transition-colors resize-none"
+                  placeholder="Type your message here..."
+                />
+              </div>
+
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  className="w-full btn-divine-primary py-4 text-black font-bold text-sm tracking-widest uppercase rounded-lg hover:scale-[1.01] active:scale-[0.99] transition-all"
+                >
+                  Send Message
+                </button>
+              </div>
+            </form>
+          </motion.div>
+
           <div className="text-center">
             <p className="font-serif italic text-muted-foreground text-sm">
               "सर्वे भवन्तु सुखिनः सर्वे सन्तु निरामयाः" — May all be happy, may all be free from illness.
