@@ -1,33 +1,14 @@
 {
     "version": 2,
-    "builds": [
-        {
-            "src": "backend/server.js",
-            "use": "@vercel/node"
-        },
-        {
-            "src": "package.json",
-            "use": "@vercel/static-build",
-            "config": {
-                "distDir": "dist"
-            }
-        }
-    ],
-    "routes": [
-        {
-            "src": "/api/(.*)",
-            "dest": "/backend/server.js"
-        },
-        {
-            "src": "/uploads/(.*)",
-            "dest": "/backend/uploads/$1"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "/$1"
-        }
-    ],
     "rewrites": [
+        {
+            "source": "/api/:match*",
+            "destination": "https://panditji-backend.onrender.com/api/:match*"
+        },
+        {
+            "source": "/uploads/:match*",
+            "destination": "https://panditji-backend.onrender.com/uploads/:match*"
+        },
         {
             "source": "/(.*)",
             "destination": "/index.html"
