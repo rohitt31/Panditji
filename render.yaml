@@ -1,0 +1,43 @@
+services:
+  # 1. Backend Service
+  - type: web
+    name: panditji-backend
+    env: node
+    region: singapore
+    plan: free
+    repo: https://github.com/rohitt31/Panditji
+    branch: main
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ADMIN_USERNAME
+        value: hariom
+      - key: ADMIN_PASSWORD
+        value: "hari@123"
+
+  # 2. Frontend Static Site
+  - type: static
+    name: panditji-frontend
+    region: singapore
+    repo: https://github.com/rohitt31/Panditji
+    branch: main
+    rootDir: .
+    buildCommand: npm install && npm run build
+    publishDir: dist
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: https://panditji-backend.onrender.com/api/*
+      - type: rewrite
+        source: /uploads/*
+        destination: https://panditji-backend.onrender.com/uploads/*
+      - type: rewrite
+        source: /*
+        destination: /index.html
