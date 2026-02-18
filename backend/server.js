@@ -68,9 +68,8 @@ const ALLOWED_ORIGINS = [
     'http://localhost:8080',
     'http://localhost:5173',
     'http://localhost:3000',
-    // Add production domain here:
-    // 'https://yourdomain.com',
-];
+    process.env.FRONTEND_URL, // Production Frontend URL
+].filter(Boolean);
 app.use(cors({
     origin: (origin, callback) => {
         // Allow requests with no origin (server-to-server, Postman, etc.)
